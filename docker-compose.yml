@@ -5,11 +5,11 @@ services:
     image: postgres:latest # Используем официальный образ PostgreSQL
     container_name: postgres_container
     ports:
-      - "5432:5432" #  Проброс порта для доступа к PostgreSQL извне (необязательно, если доступ только из pgAdmin)
+      - "5446:5432" #  Проброс порта для доступа к PostgreSQL извне (необязательно, если доступ только из pgAdmin)
     environment:
       POSTGRES_USER: admin #  Логин для PostgreSQL
-      POSTGRES_PASSWORD: P@ssw0rd #  Пароль для PostgreSQL
-      POSTGRES_DB: postgres_test #  Имя базы данных
+      POSTGRES_PASSWORD: password #  Пароль для PostgreSQL
+      POSTGRES_DB: postgrestest #  Имя базы данных
     volumes:
       - docker_postgres_data:/var/lib/postgresql/data #  Том для хранения данных, чтобы они не потерялись при перезапуске контейнера
     networks:
