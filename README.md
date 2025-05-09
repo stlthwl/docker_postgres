@@ -68,4 +68,31 @@ CREATE TABLE users (
 -- INSERT запрос (вставка одной записи)
 INSERT INTO users (email, password, name, surname)
 VALUES ('admin@mail.ru', 'P@ssw0rd', 'Александр', 'Ефремов');
+
+CREATE TABLE IF NOT EXISTS public.confirm_codes
+(
+    id integer NOT NULL DEFAULT nextval('confirm_codes_id_seq'::regclass),
+    user_id integer NOT NULL,
+    code character varying COLLATE pg_catalog."default" NOT NULL,
+    created_at timestamp without time zone,
+    actual boolean,
+    CONSTRAINT confirm_codes_pkey PRIMARY KEY (id),
+    CONSTRAINT confirm_codes_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.confirm_codes
+    OWNER to admin;
+-- Index: ix_confirm_codes_id
+
+-- DROP INDEX IF EXISTS public.ix_confirm_codes_id;
+
+CREATE INDEX IF NOT EXISTS ix_confirm_codes_id
+    ON public.confirm_codes USING btree
+    (id ASC NULLS LAST)
+    TABLESPACE pg_default;
 ```
