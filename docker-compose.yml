@@ -15,24 +15,49 @@ services:
     networks:
       - docker_postgres_network #  Присоединяем контейнер к сети
 
+#  pgadmin_container:
+#    image: dpage/pgadmin4:latest #  Используем официальный образ pgAdmin
+#    container_name: pgadmin_container
+#    ports:
+#      - "5050:80" #  Проброс порта для доступа к pgAdmin из браузера
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: admin@mail.ru #  Email для входа в pgAdmin
+#      PGADMIN_DEFAULT_PASSWORD: P@ssw0rd #  Пароль для входа в pgAdmin
+#      PGADMIN_LISTEN_PORT: 80
+#      # Разрешаем iframe с любых доменов
+#      X_FRAME_OPTIONS: "ALLOWALL"
+#      # Отключаем проверку CSRF для API (опционально)
+#      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
+#      PGADMIN_CONFIG_CSRF_PROTECTION: "False"
+#    depends_on:
+#      - postgres_container #  pgAdmin должен запуститься после PostgreSQL
+#    networks:
+#      - docker_postgres_network #  Присоединяем контейнер к сети
+
   pgadmin_container:
-    image: dpage/pgadmin4:latest #  Используем официальный образ pgAdmin
+    image: dpage/pgadmin4:latest
     container_name: pgadmin_container
-    ports:
-      - "5050:80" #  Проброс порта для доступа к pgAdmin из браузера
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@mail.ru #  Email для входа в pgAdmin
-      PGADMIN_DEFAULT_PASSWORD: P@ssw0rd #  Пароль для входа в pgAdmin
-      PGADMIN_LISTEN_PORT: 80
-      # Разрешаем iframe с любых доменов
-      X_FRAME_OPTIONS: "ALLOWALL"
-      # Отключаем проверку CSRF для API (опционально)
+      PGADMIN_DEFAULT_EMAIL: admin@mail.ru
+      PGADMIN_DEFAULT_PASSWORD: P@ssw0rd
       PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
       PGADMIN_CONFIG_CSRF_PROTECTION: "False"
-    depends_on:
-      - postgres_container #  pgAdmin должен запуститься после PostgreSQL
+      PGADMIN_CONFIG_REMOTE_USER_ENABLED: "True"
+    ports:
+      - "5050:80"
     networks:
-      - docker_postgres_network #  Присоединяем контейнер к сети
+      - mentor_network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - pgadmin_container
+    networks:
+      - mentor_network
 
 volumes:
   docker_postgres_data: #  Определение тома для хранения данных PostgreSQL
