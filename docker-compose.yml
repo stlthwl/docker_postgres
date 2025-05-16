@@ -46,7 +46,7 @@ services:
     ports:
       - "5050:80"
     networks:
-      - mentor_network
+      - docker_postgres_network
 
   nginx:
     image: nginx:alpine
@@ -57,7 +57,7 @@ services:
     depends_on:
       - pgadmin_container
     networks:
-      - mentor_network
+      - docker_postgres_network
 
 volumes:
   docker_postgres_data: #  Определение тома для хранения данных PostgreSQL
