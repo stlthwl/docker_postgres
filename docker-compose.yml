@@ -17,8 +17,8 @@ services:
     image: dpage/pgadmin4:latest
     container_name: pgadmin_container
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@mail.ru
-      PGADMIN_DEFAULT_PASSWORD: P@ssw0rd
+      PGADMIN_DEFAULT_EMAIL: example@mail.ru
+      PGADMIN_DEFAULT_PASSWORD: password
       PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
       PGADMIN_CONFIG_CSRF_PROTECTION: "False"
       PGADMIN_CONFIG_REMOTE_USER_ENABLED: "True"
